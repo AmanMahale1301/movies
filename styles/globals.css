@@ -11,17 +11,35 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 255, 255, 255;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: #000;
+  /* color: rgb(var(--foreground-rgb)); */
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+.fadeIn {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.fadeOut {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.navLink {
+  @apply flex items-center;
+}
+
+.navText {
+  @apply font-medium ms-1 text-base text-zinc-100;
 }
