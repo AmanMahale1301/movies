@@ -22,14 +22,13 @@ const Nav = () => {
         const data = response?.data?.results;
         const filteredData = data.filter((value) => value !== null);
         setGenres(filteredData);
-        setDataFetched(true);
+        // setDataFetched(true);
       } catch (error) {
         console.error(error);
       }
     };
     fetchData();
   }, []);
-  console.log(genres);
   return (
     <nav className="bg-[#0C141F] ">
       <div className="sm:flex hidden justify-between py-4 mx-2">

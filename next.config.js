@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     domains: ["m.media-amazon.com"],
   },
-  reactStrictMode: true,
+  // reactStrictMode: true,
 };
 
 module.exports = nextConfig;

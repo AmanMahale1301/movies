@@ -1,19 +1,71 @@
-import React from "react";
+import Image from "next/image";
+import React, { useState } from "react";
+import placeholder from "../../assets/placeholder.jpg";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-const Card = ({ data }) => {
-  console.log(data);
+const Card = ({ data, type }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter();
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleCardClick = async (id) => {
+    const route = `/${encodeURIComponent(type)}/${encodeURIComponent(id)}`;
+    console.log(route);
+    router.push(route);
+  };
+  // console.log(data);
   return (
-    <div
-      class="max-w-sm rounded overflow-hidden border-2 border-yellow-200 m-4"
-      key={data._id}
-    >
-      <div class="px-6 py-4">
-        <div class="font-bold text-xl mb-2">{data.originalTitleText.text}</div>
-        <p class="text-gray-700 text-base">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus
-          quia, nulla! Maiores et perferendis eaque, exercitationem praesentium
-          nihil.
-        </p>
+    <div className="relative max-w-sm rounded overflow-hidden  " key={data._id}>
+      <div
+        className="group relative px-4 py-4 transition-all duration-300"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="flex justify-center items-center relative">
+          {data?.primaryImage ? (
+            <Image
+              src={data?.primaryImage?.url}
+              width={data?.primaryImage?.width}
+              height={data?.primaryImage?.height}
+              alt="test"
+              className="h-96 w-72"
+            />
+          ) : (
+            <Image
+              src={placeholder}
+              width={200}
+              height={200}
+              alt="test"
+              className="h-96 w-72"
+            />
+          )}
+          {isHovered && (
+            <div className="absolute inset-0 bg-black opacity-30 transition-all duration-300 group-hover:opacity-40"></div>
+          )}
+          {isHovered && (
+            <button
+              className="absolute inset-0 flex items-center justify-center text-white transform scale-110 group-hover:scale-125 transition-all duration-300"
+              onClick={() => handleCardClick(data?.id)}
+            >
+              <Link className="video-play-button" href={"/"}>
+                <span></span>
+              </Link>
+            </button>
+          )}
+        </div>
+        <div className="font-sans text-white text-xs mt-1">
+          {data.originalTitleText.text}
+        </div>
+        <div className="font-sans text-slate-400 text-xs mt-1">
+          {data.releaseYear.year}
+        </div>
       </div>
     </div>
   );
