@@ -6,9 +6,9 @@ export default function Layout({ children }) {
   return (
     <>
       {/* <Provider> */}
-      <main className="app">
+      <main className="app min-h-screen flex flex-col">
         <Nav />
-        <div className="bg-[#020916]">{children}</div>
+        <div className="flex-1 bg-[#020916]">{children}</div>
       </main>
       {/* </Provider> */}
     </>

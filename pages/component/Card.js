@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import placeholder from "../../assets/placeholder.jpg";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Card = ({ data, type }) => {
@@ -17,12 +16,11 @@ const Card = ({ data, type }) => {
 
   const handleCardClick = async (id) => {
     const route = `/${encodeURIComponent(type)}/${encodeURIComponent(id)}`;
-    console.log(route);
     router.push(route);
   };
-  // console.log(data);
+
   return (
-    <div className="relative max-w-sm rounded overflow-hidden  " key={data._id}>
+    <div className="relative max-w-sm rounded overflow-hidden" key={data._id}>
       <div
         className="group relative px-4 py-4 transition-all duration-300"
         onMouseEnter={handleMouseEnter}
@@ -51,16 +49,14 @@ const Card = ({ data, type }) => {
           )}
           {isHovered && (
             <button
-              className="absolute inset-0 flex items-center justify-center text-white transform scale-110 group-hover:scale-125 transition-all duration-300"
+              className="absolute inset-0 flex items-center justify-center text-white  transition-all duration-300 video-play-button"
               onClick={() => handleCardClick(data?.id)}
             >
-              <Link className="video-play-button" href={"/"}>
-                <span></span>
-              </Link>
+              <span></span>
             </button>
           )}
         </div>
-        <div className="font-sans text-white text-xs mt-1">
+        <div className="font-sans text-white text-xs mt-1 truncate w-64">
           {data.originalTitleText.text}
         </div>
         <div className="font-sans text-slate-400 text-xs mt-1">

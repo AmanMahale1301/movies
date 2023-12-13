@@ -7,6 +7,8 @@ const index = () => {
   return (
     <div className="">
       <List type={"movie"} />
+      <div className="h-24"></div>
+      <List type={"tvSeries"} />
     </div>
   );
 };
