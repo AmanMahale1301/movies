@@ -190,7 +190,7 @@ const Nav = () => {
                     <c>
                       {searchResults.length > 0 &&
                         searchResults.map((result) => (
-                          <div className="p-2 border border-gray-800">
+                          <div className="p-2 my-2 border border-gray-800">
                             {result?.primaryImage ? (
                               <Image
                                 src={result?.primaryImage?.url}
