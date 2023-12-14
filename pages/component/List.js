@@ -43,8 +43,8 @@ const List = ({ type }) => {
   const formattedType = formatType(type);
   return (
     <div className="mt-4">
-      <span className="text-2xl text-white  font-bold capitalize mx-36">
-        <FontAwesomeIcon icon={faTicket} color="white" className="me-2" />
+      <span className="text-2xl text-white  font-bold capitalize flex justify-center items-center ">
+        {/* <FontAwesomeIcon icon={faTicket} color="white" className="me-2" /> */}
         {formattedType}
       </span>
       {loading ? (
@@ -55,6 +55,7 @@ const List = ({ type }) => {
             className="animate-spin"
             width={40}
             height={40}
+            alt="Loading"
           />
         </div>
       ) : (
@@ -64,7 +65,7 @@ const List = ({ type }) => {
           </div>
           <div className="w-full flex items-center justify-center">
             <button
-              className="  p-2 bg-slate-100 text-lg rounded"
+              className="  p-2 bg-gradient-to-r from-[#0a0a0a] to-[#101213] text-lg border border-gray-400 text-white rounded"
               onClick={() => handleRoute()}
             >
               View More

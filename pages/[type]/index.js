@@ -12,6 +12,7 @@ const Index = () => {
   const router = useRouter();
   const { type } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
+  const [newPageVal, setNewPageVal] = useState(currentPage);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,11 +38,17 @@ const Index = () => {
 
   const handleNext = () => {
     setCurrentPage(currentPage + 1);
+    setNewPageVal(currentPage + 1);
   };
   const handlePrevious = () => {
     setCurrentPage(currentPage - 1);
+    setNewPageVal(currentPage - 1);
   };
-
+  const handlePage = (event) => {
+    if (event.key === "Enter") {
+      setCurrentPage(parseInt(newPageVal));
+    }
+  };
   function formatType() {
     if (type === "movie") {
       return type + "s";
@@ -64,6 +71,7 @@ const Index = () => {
             className="animate-spin"
             width={40}
             height={40}
+            alt="Loading"
           />
         </div>
       ) : (
@@ -80,9 +88,12 @@ const Index = () => {
               >
                 Previous
               </button>
-              <span className="p-3 px-4 text-white rounded bg-gradient-to-r from-[#0a153d] to-[#043b63]">
-                {currentPage}
-              </span>
+              <input
+                className="p-3 w-20 text-white items-center text-center rounded bg-gradient-to-r from-[#0a153d] to-[#043b63]"
+                value={newPageVal}
+                onChange={(event) => setNewPageVal(event.target.value)}
+                onKeyDown={handlePage}
+              />
               <button
                 className="p-3 px-4 text-white rounded bg-gradient-to-r from-[#0a153d] to-[#043b63] mx-2"
                 disabled={data.length < 20} // Assuming you get 20 items per page
