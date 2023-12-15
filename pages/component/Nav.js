@@ -17,6 +17,7 @@ import logo from "../../assets/logo.png";
 import { useRouter } from "next/router";
 import spinner from "../../assets/spinner.png";
 import placeholder from "../../assets/placeholder.jpg";
+
 const Nav = () => {
   const [genres, setGenres] = useState([]);
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -48,7 +49,7 @@ const Nav = () => {
         try {
           setLoading(true);
           const response = await axiosOpen.get(
-            `/titles/search/keyword/${query}?limit=3&page=1`
+            `/titles/search/keyword/${query}?info=base_info&limit=3`
           );
           setSearchResults(response?.data?.results);
           setLoading(false);
@@ -57,14 +58,13 @@ const Nav = () => {
           setLoading(false);
         }
       } else {
-        setSearchResults([]); // Clear results if the query is empty
+        setSearchResults([]);
       }
     };
 
-    // Use a debounce function to delay API calls
-    const debounceTimer = setTimeout(fetchData, 300);
+    const debounceTimer = setTimeout(fetchData, 1000);
 
-    return () => clearTimeout(debounceTimer); // Cleanup on component unmount or when the query changes
+    return () => clearTimeout(debounceTimer);
   }, [query]);
 
   const handleInputChange = (event) => {
@@ -72,6 +72,9 @@ const Nav = () => {
   };
   const handleSearchClick = () => {
     setShowSearch(true);
+  };
+  const handleSearchCancel = () => {
+    setShowSearch(false);
   };
 
   const handleMouseEnter = () => {
@@ -87,6 +90,10 @@ const Nav = () => {
     setShowGenres(false);
   };
 
+  const handleSearch = () => {
+    const route = `/search/${encodeURIComponent(query)}`;
+    router.push(route);
+  };
   return (
     <nav className="bg-[#0C141F] ">
       <div className="sm:flex hidden justify-around py-4 mx-2">
@@ -107,7 +114,6 @@ const Nav = () => {
               <FontAwesomeIcon icon={faTv} color="white" />
               <span className="navText">TV Series</span>
             </Link>
-
             <div
               className={`relative inline-block text-left group mt-1.5 z-10`}
               onMouseEnter={handleMouseEnter}
@@ -178,7 +184,7 @@ const Nav = () => {
                   style={{ width: "60vw" }}
                 />
                 <button
-                  onClick={handleSearchClick}
+                  onClick={handleSearchCancel}
                   className="bg-white p-3 rounded-r me-1"
                 >
                   <FontAwesomeIcon icon={faClose} color="grey" size="xl" />
@@ -187,30 +193,70 @@ const Nav = () => {
                   {loading ? (
                     <div className="p-4">Loading...</div>
                   ) : (
-                    <c>
+                    <>
                       {searchResults.length > 0 &&
                         searchResults.map((result) => (
-                          <div className="p-2 my-2 border border-gray-800">
-                            {result?.primaryImage ? (
-                              <Image
-                                src={result?.primaryImage?.url}
-                                width={result?.primaryImage?.width}
-                                height={result?.primaryImage?.height}
-                                alt="test"
-                                className="h-24 w-16"
-                              />
-                            ) : (
-                              <Image
-                                src={placeholder}
-                                width={200}
-                                height={200}
-                                alt="test"
-                                className="h-96 w-72"
-                              />
-                            )}
-                          </div>
+                          <>
+                            <div className="p-2 my-2 px-7 flex justify-between ">
+                              <div className="w-1/5">
+                                {result?.primaryImage ? (
+                                  <Image
+                                    src={result?.primaryImage?.url}
+                                    width={result?.primaryImage?.width}
+                                    height={result?.primaryImage?.height}
+                                    alt="test"
+                                    className="h-28 w-20"
+                                  />
+                                ) : (
+                                  <Image
+                                    src={placeholder}
+                                    width={200}
+                                    height={200}
+                                    alt="test"
+                                    className="h-28 w-20"
+                                  />
+                                )}
+                              </div>
+                              <div className="w-4/5">
+                                <span className="text-lg font-semibold py-1 ps-4  block">
+                                  {result?.titleText.text}
+                                </span>
+                                {result?.ratingsSummary?.aggregateRating ? (
+                                  <span className="text-medium font-semibold py-1  ps-4 block">
+                                    {result?.ratingsSummary?.aggregateRating} /
+                                    10 ({result?.ratingsSummary?.voteCount})
+                                  </span>
+                                ) : (
+                                  <span className="text-medium font-semibold py-1  ps-4 block">
+                                    No Reviews
+                                  </span>
+                                )}
+
+                                <span className="text-base text-gray-400 underline font-semibold py-3  ps-4 block">
+                                  {result?.titleText.text}
+                                </span>
+                              </div>
+                            </div>
+
+                            <hr className="border-t border-gray-400 mx-5" />
+                          </>
                         ))}
-                    </c>
+                      {query !== "" ? (
+                        <button
+                          className="p-3 mt-2 flex-center w-full hover:bg-black hover:bg-opacity-30 rounded-b"
+                          onClick={() => handleSearch()}
+                        >
+                          <FontAwesomeIcon
+                            icon={faSearch}
+                            color="grey"
+                            className="me-2"
+                          />{" "}
+                          <span className="text-lg font-medium ">
+                            View All Results
+                          </span>
+                        </button>
+                      ) : null}
+                    </>
                   )}
                 </ul>
               </div>
