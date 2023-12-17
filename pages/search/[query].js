@@ -89,7 +89,7 @@ const Search = () => {
 
                   <button
                     className="p-3 px-4 text-white rounded bg-gradient-to-r from-[#0a153d] to-[#043b63] mx-2"
-                    disabled={data.length < 20} // Assuming you get 20 items per page
+                    disabled={data.length < 20}
                     onClick={() => handleNext()}
                   >
                     Next

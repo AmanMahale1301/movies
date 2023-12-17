@@ -16,7 +16,9 @@ const index = () => {
       try {
         if (id) {
           setLoading(true);
-          const response = await axiosOpen.get(`/titles/${id}`);
+          const response = await axiosOpen.get(
+            `/titles/${id}?info=custom_info`
+          );
           console.log(response);
           setData(response?.data?.results);
           setLoading(false);
@@ -28,6 +30,7 @@ const index = () => {
     fetchData();
   }, [id]);
   console.log(data);
+
   return (
     <>
       {loading ? (
@@ -50,18 +53,18 @@ const index = () => {
         </div>
       ) : (
         <div className="m-10 mx-24">
-          <span className="text-white font-sans font-bold text-4xl mx-4 flex justify-start items-center">
+          <span className="text-yellow-400 font-sans xl:justify-start font-bold text-4xl mx-4 flex justify-center text-center  items-center">
             {data?.originalTitleText?.text}
           </span>
-          <div className="flex justify-between items-center my-2 mt-8 text-white">
-            <div className="">
+          <div className="flex justify-between items-center my-2 mt-8 flex-wrap text-white">
+            <div className=" px-6">
               {data?.primaryImage ? (
                 <Image
                   src={data?.primaryImage?.url}
                   width={data?.primaryImage?.width}
                   height={data?.primaryImage?.height}
                   alt="test"
-                  className="h-96 w-72 rounded mx-6"
+                  className="h-96 w-72 rounded "
                 />
               ) : (
                 <Image
@@ -69,11 +72,11 @@ const index = () => {
                   width={200}
                   height={200}
                   alt="test"
-                  className="h-96 w-72 rounded mx-6"
+                  className="h-96 w-72 rounded "
                 />
               )}
             </div>
-            <div className="">test</div>
+            <div className=""></div>
           </div>
         </div>
       )}

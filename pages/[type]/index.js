@@ -3,17 +3,26 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Card from "../component/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTicket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faTicket,
+} from "@fortawesome/free-solid-svg-icons";
 import spinner from "../../assets/spinner.png";
 import Image from "next/image";
 const Index = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { type } = router.query;
+  let { type } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
   const [newPageVal, setNewPageVal] = useState(currentPage);
 
+  if (type === "movies") {
+    const formatType = type.replace("s", "");
+    console.log(formatType);
+    type = formatType;
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,8 +68,7 @@ const Index = () => {
   const formattedType = formatType(type);
   return (
     <>
-      <span className="text-2xl text-white  font-bold capitalize flex justify-center items-center ">
-        <FontAwesomeIcon icon={faTicket} color="white" className="me-2" />
+      <span className="text-4xl text-white my-5 font-bold capitalize flex justify-center items-center ">
         {formattedType}
       </span>
       {loading ? (
@@ -82,24 +90,32 @@ const Index = () => {
           <div className="w-full">
             <div className="flex justify-center py-4 ">
               <button
-                className="p-3 px-4 text-white rounded bg-gradient-to-r from-[#0a153d] to-[#043b63] mx-2"
+                className={`p-3 px-4 text-white border-2 ${
+                  currentPage === 1 ? "border-[#3f3e3e]" : "border-gray-400"
+                } border-gray-400  text-center rounded-lg bg-[#020916] mx-2`}
                 disabled={currentPage === 1}
                 onClick={() => handlePrevious()}
               >
-                Previous
+                <FontAwesomeIcon icon={faArrowLeft} color="white" />
               </button>
               <input
-                className="p-3 w-20 text-white items-center text-center rounded bg-gradient-to-r from-[#0a153d] to-[#043b63]"
+                className=" w-10 items-center text-white border-2 border-gray-400 text-center rounded-lg bg-[#020916]"
                 value={newPageVal}
+                disabled={data.length < 20}
                 onChange={(event) => setNewPageVal(event.target.value)}
                 onKeyDown={handlePage}
               />
               <button
-                className="p-3 px-4 text-white rounded bg-gradient-to-r from-[#0a153d] to-[#043b63] mx-2"
-                disabled={data.length < 20} // Assuming you get 20 items per page
+                className={`p-3 px-4 text-white border-2 ${
+                  data.length < 20 ? "border-[#3f3e3e]" : "border-gray-400"
+                } text-center rounded-lg bg-[#020916] mx-2`}
+                disabled={data.length < 20}
                 onClick={() => handleNext()}
               >
-                Next
+                <FontAwesomeIcon
+                  icon={faArrowRight}
+                  color={`${data.length < 20 ? "#2f2a2a" : "white"}`}
+                />
               </button>
             </div>
           </div>

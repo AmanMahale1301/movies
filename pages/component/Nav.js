@@ -91,9 +91,11 @@ const Nav = () => {
   };
 
   const handleSearch = () => {
+    setQuery("");
     const route = `/search/${encodeURIComponent(query)}`;
     router.push(route);
   };
+
   return (
     <nav className="bg-[#0C141F] ">
       <div className="sm:flex hidden justify-around py-4 mx-2">
@@ -106,7 +108,7 @@ const Nav = () => {
               <FontAwesomeIcon icon={faHome} color="white" />
               <span className="navText">Home </span>
             </Link>
-            <Link href={"/movie"} className="navLink">
+            <Link href={"/movies"} className="navLink">
               <FontAwesomeIcon icon={faFilm} color="white" />
               <span className="navText">Movies</span>
             </Link>
@@ -232,8 +234,8 @@ const Nav = () => {
                                   </span>
                                 )}
 
-                                <span className="text-base text-gray-400 underline font-semibold py-3  ps-4 block">
-                                  {result?.titleText.text}
+                                <span className="text-base text-gray-400 font-light py-3  ps-4 block">
+                                  {result?.releaseYear?.year}
                                 </span>
                               </div>
                             </div>
@@ -241,7 +243,7 @@ const Nav = () => {
                             <hr className="border-t border-gray-400 mx-5" />
                           </>
                         ))}
-                      {query !== "" ? (
+                      {query !== "" && searchResults.length > 0 ? (
                         <button
                           className="p-3 mt-2 flex-center w-full hover:bg-black hover:bg-opacity-30 rounded-b"
                           onClick={() => handleSearch()}
@@ -268,12 +270,8 @@ const Nav = () => {
           )}
         </div>
       </div>
-      <div className="sm:hidden flex relative w-full">
+      <div className="sm:hidden flex relative w-full p-4">
         <div className="w-full">
-          {/* <Image
-            src=""
-             */}
-          {/* /> */}
           <FontAwesomeIcon
             icon={faBars}
             color="white"
@@ -288,11 +286,11 @@ const Nav = () => {
                 <FontAwesomeIcon icon={faHome} color="white" />
                 <span className="navText">Home </span>
               </Link>
-              <Link href={"/movie"} className="navMobile">
+              <Link href={"/movies"} className="navMobile">
                 <FontAwesomeIcon icon={faFilm} color="white" />
                 <span className="navText">Movies</span>
               </Link>
-              <Link href={"#"} className="navMobile">
+              <Link href={"/tvSeries"} className="navMobile">
                 <FontAwesomeIcon icon={faTv} color="white" />
                 <span className="navText">TV Series</span>
               </Link>
@@ -363,7 +361,7 @@ const Nav = () => {
                 />
                 <button
                   className="text-slate-200  bg-white py-1 px-2 rounded-r text-base font-sans  font-semibold "
-                  onClick={() => handleSearchClick()}
+                  onClick={() => handleSearch()}
                 >
                   <FontAwesomeIcon icon={faSearch} color="grey" />
                 </button>

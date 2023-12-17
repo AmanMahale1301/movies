@@ -29,6 +29,10 @@ const List = ({ type }) => {
     fetchData();
   }, []);
   const handleRoute = () => {
+    if (type === "movie") {
+      const route = `/${encodeURIComponent(type)}s`;
+      router.push(route);
+    }
     const route = `/${encodeURIComponent(type)}`;
     router.push(route);
   };
@@ -43,7 +47,7 @@ const List = ({ type }) => {
   const formattedType = formatType(type);
   return (
     <div className="mt-4">
-      <span className="text-2xl text-white  font-bold capitalize flex justify-center items-center ">
+      <span className="text-2xl text-yellow-400  font-bold capitalize flex justify-center items-center ">
         {/* <FontAwesomeIcon icon={faTicket} color="white" className="me-2" /> */}
         {formattedType}
       </span>
