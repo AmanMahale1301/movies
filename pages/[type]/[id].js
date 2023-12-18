@@ -89,7 +89,7 @@ const index = () => {
                   {data?.ratingsSummary?.voteCount})
                 </p>
               ) : (
-                <p className="mb-4">
+                <p className="mb-4 text-lg">
                   {" "}
                   <span className=" font-semibold ">Ratings </span>: No Ratings{" "}
                 </p>
@@ -198,30 +198,36 @@ const index = () => {
                   </>
                 ) : (
                   <p className="text-lg mb-4">
-                    <span className="font-semibold">Actor:</span> Not Found
+                    <span className="font-semibold">Actor :</span> Not Found
                   </p>
                 )}
               </div>
-              <div className="mt-2">
+              <div className="mt-2 mb-4">
                 <div className="flex items-center text-lg">
                   <span className=" font-semibold pe-1">Genre </span> :
-                  {data?.genres.genres.map((genre, index) => (
-                    <div
-                      key={genre.id}
-                      onClick={() => handleGenreClick(genre.text)}
-                      className="hover:underline px-1"
-                    >
-                      {console.log(data?.genres.genres.length)}
-                      {genre.text}
-                      {index < data?.genres.genres.length - 1 && ", "}
-                    </div>
-                  ))}
+                  {data?.genres ? (
+                    <>
+                      {data?.genres?.genres.map((genre, index) => (
+                        <div
+                          key={genre.id}
+                          onClick={() => handleGenreClick(genre.text)}
+                          className="hover:underline px-1"
+                        >
+                          {console.log(data?.genres.genres.length)}
+                          {genre.text}
+                          {index < data?.genres.genres.length - 1 && ", "}
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <span className="ps-1"> Not Listed</span>
+                  )}
                 </div>
               </div>
               <div className="mt-2">
                 <div className="flex text-lg">
                   <span className="font-semibold pe-1 block">Plot</span>:
-                  {data?.plot.plotText ? (
+                  {data?.plot?.plotText ? (
                     <div className="ps-1">{data?.plot.plotText.plainText}</div>
                   ) : (
                     <div>Not Found</div>

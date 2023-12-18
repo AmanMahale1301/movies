@@ -91,9 +91,21 @@ const Nav = () => {
   };
 
   const handleSearch = () => {
-    setQuery("");
-    const route = `/search/${encodeURIComponent(query)}`;
-    router.push(route);
+    if (query.trim() !== "") {
+      setQuery("");
+      const route = `/search/${encodeURIComponent(query)}`;
+      router.push(route);
+    }
+  };
+
+  const handleMobileSearch = () => {
+    const trimmedQuery = query.trim();
+    console.log(trimmedQuery);
+    if (query.trim() !== "") {
+      setQuery("");
+      const route = `/search/${encodeURIComponent(query)}`;
+      router.push(route);
+    }
   };
 
   return (
@@ -361,7 +373,7 @@ const Nav = () => {
                 />
                 <button
                   className="text-slate-200  bg-white py-1 px-2 rounded-r text-base font-sans  font-semibold "
-                  onClick={() => handleSearch()}
+                  onClick={() => handleMobileSearch()}
                 >
                   <FontAwesomeIcon icon={faSearch} color="grey" />
                 </button>

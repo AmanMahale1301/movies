@@ -29,7 +29,7 @@ const Index = () => {
         if (type) {
           setLoading(true);
           const response = await axiosOpen.get(
-            `/titles?titleType=${type}&limit=20&page=${currentPage}`
+            `/titles?titleType=${type}&sort=year.decr&limit=20&page=${currentPage}`
           );
           setData(response?.data?.results);
           setLoading(false);
