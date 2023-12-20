@@ -14,9 +14,10 @@ const List = ({ type }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const date = new Date().getFullYear();
         setLoading(true);
         const response = await axiosOpen.get(
-          `/titles?titleType=${type}&limit=20`
+          `/titles?titleType=${type}&sort=year.decr&limit=20&endYear=${date}`
         );
         console.log(response);
         setData(response?.data?.results);
@@ -69,7 +70,7 @@ const List = ({ type }) => {
           </div>
           <div className="w-full flex items-center justify-center">
             <button
-              className="  p-2 bg-gradient-to-r from-[#0a0a0a] to-[#101213] text-lg border border-gray-400 text-white rounded"
+              className="  p-2 bg-gradient-to-r from-[#0a0a0a] to-[#101213] text-sm border border-gray-400 text-white rounded"
               onClick={() => handleRoute()}
             >
               View More

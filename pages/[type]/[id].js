@@ -80,16 +80,16 @@ const index = () => {
                 />
               )}
             </div>
-            <div className="flex-1 items-start mt-5 ms-6 ">
+            <div className="flex-1 items-start mt-3 ms-6 ">
               {data?.ratingsSummary?.aggregateRating ? (
-                <p className="text-lg mb-4">
+                <p className="text-sm mb-4">
                   {" "}
                   <span className=" font-semibold ">Ratings </span>:{" "}
                   {data?.ratingsSummary?.aggregateRating} / 10 (
                   {data?.ratingsSummary?.voteCount})
                 </p>
               ) : (
-                <p className="mb-4 text-lg">
+                <p className="mb-4 text-sm">
                   {" "}
                   <span className=" font-semibold ">Ratings </span>: No Ratings{" "}
                 </p>
@@ -102,7 +102,7 @@ const index = () => {
                         <div className="mt-2">
                           {director.credits.map((credit, creditIndex) => (
                             <div key={creditIndex}>
-                              <div className="text-lg">
+                              <div className="text-sm">
                                 <span className="font-semibold ">Director</span>
                                 : {credit.name.nameText.text}
                               </div>
@@ -113,7 +113,7 @@ const index = () => {
                     ))}
                   </>
                 ) : (
-                  <p className="text-lg mb-4">
+                  <p className="text-sm mb-4">
                     <span className="font-semibold">Director</span> : Not Found{" "}
                   </p>
                 )}
@@ -123,7 +123,7 @@ const index = () => {
                   <>
                     {data?.writers.map((writer, index) => (
                       <div key={index} className="mb-4">
-                        <div className=" text-lg">
+                        <div className=" text-sm">
                           <span className="font-semibold">Writer: </span>
                           {writer.credits.map((credit, creditIndex) => (
                             <span key={creditIndex}>
@@ -136,7 +136,7 @@ const index = () => {
                     ))}
                   </>
                 ) : (
-                  <p className="text-lg mb-4">
+                  <p className="text-sm mb-4">
                     <span className="font-semibold">Writer:</span> Not Found
                   </p>
                 )}
@@ -146,7 +146,7 @@ const index = () => {
                   <>
                     {data?.principalCast.map((actor, index) => (
                       <div key={index} className="mb-4">
-                        <div className=" text-lg">
+                        <div className=" text-sm">
                           <div className="font-semibold">Actor: </div>
                           <div className="flex mt-2 items-center flex-wrap max-[492px]:justify-center">
                             {actor.credits.map((credit, creditIndex) => (
@@ -197,13 +197,13 @@ const index = () => {
                     ))}
                   </>
                 ) : (
-                  <p className="text-lg mb-4">
+                  <p className="text-sm mb-4">
                     <span className="font-semibold">Actor :</span> Not Found
                   </p>
                 )}
               </div>
               <div className="mt-2 mb-4">
-                <div className="flex items-center text-lg">
+                <div className="flex items-center text-sm">
                   <span className=" font-semibold pe-1">Genre </span> :
                   {data?.genres ? (
                     <>
@@ -225,12 +225,12 @@ const index = () => {
                 </div>
               </div>
               <div className="mt-2">
-                <div className="flex text-lg">
+                <div className="flex text-sm">
                   <span className="font-semibold pe-1 block">Plot</span>:
                   {data?.plot?.plotText ? (
                     <div className="ps-1">{data?.plot.plotText.plainText}</div>
                   ) : (
-                    <div>Not Found</div>
+                    <div className="ps-1">Not Found</div>
                   )}
                 </div>
               </div>

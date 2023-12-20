@@ -48,7 +48,7 @@ body {
 }
 
 .navText {
-  @apply font-medium ms-1 text-base text-zinc-100;
+  @apply font-medium ms-1 text-sm text-zinc-100;
 }
 
 .video-play-button {
@@ -126,4 +126,17 @@ body {
     transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
     opacity: 0;
   }
+}
+
+.carousel {
+  overflow: hidden;
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+  flex: 0 0 25%; /* Each item takes up 25% of the container */
 }

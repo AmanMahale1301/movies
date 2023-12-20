@@ -16,8 +16,10 @@ const Index = () => {
   const router = useRouter();
   let { type } = router.query;
   const [currentPage, setCurrentPage] = useState(1);
+  const [sort, setSort] = useState("year.decr");
   const [newPageVal, setNewPageVal] = useState(currentPage);
-
+  const date = new Date();
+  const year = date.getFullYear();
   if (type === "movies") {
     const formatType = type.replace("s", "");
     console.log(formatType);
@@ -28,8 +30,9 @@ const Index = () => {
       try {
         if (type) {
           setLoading(true);
+
           const response = await axiosOpen.get(
-            `/titles?titleType=${type}&sort=year.decr&limit=20&page=${currentPage}`
+            `/titles?titleType=${type}&sort=${sort}&endYear=${year}&limit=20&page=${currentPage}`
           );
           setData(response?.data?.results);
           setLoading(false);
@@ -41,7 +44,7 @@ const Index = () => {
     };
 
     fetchData();
-  }, [type, currentPage]);
+  }, [type, currentPage, sort]);
   console.log(currentPage);
   console.log(data);
 
@@ -66,6 +69,10 @@ const Index = () => {
     }
   }
   const formattedType = formatType(type);
+  const handleSort = (item) => {
+    console.log(item);
+    setSort(item);
+  };
   return (
     <>
       <span className="text-4xl text-white my-5 font-bold capitalize flex justify-center items-center ">
@@ -84,6 +91,22 @@ const Index = () => {
         </div>
       ) : (
         <>
+          <div className="flex justify-end items-center me-4 max-[492px]:w-full ">
+            <select
+              id="sortOptions"
+              name="sortOptions"
+              className="mt-1 block w-40 py-2 px-3 border border-gray-300 bg-[#020916] text-white rounded-md focus:outline-none max-[492px]:w-full mx-10"
+              onChange={(e) => handleSort(e.target.value)}
+            >
+              <option value="year.incr" className="py-1">
+                Ascending
+              </option>
+              <option value="year.decr" className="py-1">
+                Descending
+              </option>
+            </select>
+          </div>
+
           <div className=" flex flex-wrap justify-center items-center ">
             {data && data.map((movie) => <Card data={movie} type={type} />)}
           </div>
