@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import placeholder from "../../assets/placeholder.jpg";
 import { useRouter } from "next/router";
 
-const Card = ({ data, type }) => {
+const CarouselCard = ({ data }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const handleMouseEnter = () => {
@@ -20,7 +20,7 @@ const Card = ({ data, type }) => {
   };
 
   return (
-    <div className="relative max-w-sm rounded overflow-hidden" key={data._id}>
+    <div className="relative max-w-xs rounded overflow-hidden" key={data._id}>
       <div
         className="group relative px-4 py-4 transition-all duration-300"
         onMouseEnter={handleMouseEnter}
@@ -33,7 +33,7 @@ const Card = ({ data, type }) => {
               width={data?.primaryImage?.width}
               height={data?.primaryImage?.height}
               alt="test"
-              className="h-96 w-72"
+              className="h-80 w-56"
             />
           ) : (
             <Image
@@ -41,7 +41,7 @@ const Card = ({ data, type }) => {
               width={200}
               height={200}
               alt="test"
-              className="h-96 w-72"
+              className="h-80 w-56"
             />
           )}
           {isHovered && (
@@ -56,7 +56,7 @@ const Card = ({ data, type }) => {
             </button>
           )}
         </div>
-        <div className="font-sans text-white text-xs mt-1 truncate w-64">
+        <div className="font-sans text-white text-xs mt-1 truncate w-56">
           {data.originalTitleText.text}
         </div>
         {data.releaseYear ? (
@@ -71,4 +71,4 @@ const Card = ({ data, type }) => {
   );
 };
 
-export default Card;
+export default CarouselCard;
