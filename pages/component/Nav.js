@@ -1,6 +1,7 @@
 import { axiosOpen } from "@/utils/service";
 import {
   faBars,
+  faCalendar,
   faClose,
   faFilm,
   faFolderOpen,
@@ -23,7 +24,7 @@ import spinner from "../../assets/spinner.png";
 import placeholder from "../../assets/placeholder.jpg";
 import { useSession, getProviders, signIn, signOut } from "next-auth/react";
 import Preferences from "./Preferences";
-
+import user from "../../assets/user.jpg";
 const Nav = () => {
   const { data: session } = useSession();
   const [genres, setGenres] = useState([]);
@@ -35,6 +36,7 @@ const Nav = () => {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [open, setOpen] = useState(false);
+  const [userDropdown, setUserDropdown] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
@@ -62,13 +64,14 @@ const Nav = () => {
     };
     setProvider();
   }, [session]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (query.trim() !== "") {
         try {
           setLoading(true);
           const response = await axiosOpen.get(
-            `/titles/search/keyword/${query}?info=base_info&limit=3`
+            `/titles/search/keyword/${query}?info=base_info&sort=year.decr&endYear=2023&limit=3`
           );
           setSearchResults(response?.data?.results);
           setLoading(false);
@@ -103,6 +106,7 @@ const Nav = () => {
   const handleMouseLeave = () => {
     setShowGenres(false);
   };
+
   const handleRoute = (genre) => {
     const route = `/genre/${encodeURIComponent(genre)}`;
     router.push(route);
@@ -126,17 +130,24 @@ const Nav = () => {
       router.push(route);
     }
   };
-
+  const handleSearchRoute = (result) => {
+    const route = `/${encodeURIComponent(
+      result?.titleType?.id
+    )}/${encodeURIComponent(result.id)}`;
+    router.push(route);
+  };
   const handleSignOut = async () => {
     setToggleDropdown(false);
     await signOut({ redirect: false });
     router.push("/");
   };
-
+  const toggleUserDropdown = () => {
+    setUserDropdown(!userDropdown);
+  };
   return (
     <>
       <nav className="bg-[#0C141F] ">
-        <div className="sm:flex hidden justify-around py-4 mx-2">
+        <div className="min-[772px]:flex hidden justify-around py-4 mx-2">
           {!showSearch && (
             <div className="container flex space-x-8 ">
               <Link href={"/"} className="navLink">
@@ -155,62 +166,68 @@ const Nav = () => {
                 <span className="navText">TV Series</span>
               </Link>
               {session?.user ? (
-                <div
-                  className={`relative inline-block text-left group mt-1.5 z-10`}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div>
-                    <button
-                      type="button"
-                      id="menu-button"
-                      aria-expanded="true"
-                      aria-haspopup="true"
-                      className="flex items-center gap-x-1.5 rounded-md text-gray-900 "
-                    >
-                      <FontAwesomeIcon icon={faFolderOpen} color="white" />
-                      <span className="navText">Genres</span>
-                    </button>
-                  </div>
-
-                  <ul
-                    className={`absolute text-gray-700 py-5 right-2/3 translate-x-1/2 ${
-                      showGenres ? "block" : "hidden"
-                    } bg-[#1b2635] z-10 rounded`}
+                <>
+                  <Link href={"/upcoming"} className="navLink">
+                    <FontAwesomeIcon icon={faCalendar} color="white" />
+                    <span className="navText">Upcoming</span>
+                  </Link>
+                  <div
+                    className={`relative inline-block text-left group mt-1.5 z-10`}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    {loading ? (
-                      <div className="flex items-center justify-center h-full w-32 py-2 pb-6">
-                        <Image
-                          src={spinner}
-                          className="animate-spin "
-                          width={40}
-                          height={40}
-                          alt="Loading"
-                        />
-                      </div>
-                    ) : (
-                      <div className="container grid grid-cols-3 gap-4 w-max py-2 rounded-md">
-                        {genres &&
-                          genres.map((genre, index) => (
-                            <li
-                              className="mx-3"
-                              key={index}
-                              onClick={() => {
-                                handleRoute(genre);
-                              }}
-                            >
-                              <a
-                                className="bg-[#333131] text-white hover:bg-gray-400 p-1 block text-center rounded"
-                                style={{ cursor: "pointer" }}
+                    <div>
+                      <button
+                        type="button"
+                        id="menu-button"
+                        aria-expanded="true"
+                        aria-haspopup="true"
+                        className="flex items-center gap-x-1.5 rounded-md text-gray-900 "
+                      >
+                        <FontAwesomeIcon icon={faFolderOpen} color="white" />
+                        <span className="navText">Genres</span>
+                      </button>
+                    </div>
+
+                    <ul
+                      className={`absolute text-gray-700 py-5 right-2/3 translate-x-1/2 ${
+                        showGenres ? "block" : "hidden"
+                      } bg-[#1b2635] z-10 rounded`}
+                    >
+                      {loading ? (
+                        <div className="flex items-center justify-center h-full w-32 py-2 pb-6">
+                          <Image
+                            src={spinner}
+                            className="animate-spin "
+                            width={40}
+                            height={40}
+                            alt="Loading"
+                          />
+                        </div>
+                      ) : (
+                        <div className="container grid grid-cols-3 gap-4 w-max py-2 rounded-md">
+                          {genres &&
+                            genres.map((genre, index) => (
+                              <li
+                                className="mx-3"
+                                key={index}
+                                onClick={() => {
+                                  handleRoute(genre);
+                                }}
                               >
-                                {genre}
-                              </a>
-                            </li>
-                          ))}
-                      </div>
-                    )}
-                  </ul>
-                </div>
+                                <a
+                                  className="bg-[#333131] text-white hover:bg-gray-400 p-1 block text-center rounded"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  {genre}
+                                </a>
+                              </li>
+                            ))}
+                        </div>
+                      )}
+                    </ul>
+                  </div>
+                </>
               ) : null}
             </div>
           )}
@@ -231,7 +248,7 @@ const Nav = () => {
                   >
                     <FontAwesomeIcon icon={faClose} color="grey" size="xl" />
                   </button>
-                  <ul className="absolute mt-5 bg-white w-2/5 z-10 right-1/2 translate-x-1/2 rounded ">
+                  <ul className="absolute mt-5 bg-white w-2/5 z-50 right-1/2 translate-x-1/2 rounded ">
                     {loading ? (
                       <div className="p-4">Loading...</div>
                     ) : (
@@ -239,7 +256,10 @@ const Nav = () => {
                         {searchResults.length > 0 &&
                           searchResults.map((result) => (
                             <>
-                              <div className="p-2 my-2 px-7 flex justify-between ">
+                              <div
+                                className="searchItem"
+                                onClick={() => handleSearchRoute(result)}
+                              >
                                 <div className="w-1/5">
                                   {result?.primaryImage ? (
                                     <Image
@@ -274,7 +294,7 @@ const Nav = () => {
                                     </span>
                                   )}
 
-                                  <span className="text-base text-gray-400 font-light py-3  ps-4 block">
+                                  <span className="text-base text-gray-600 italic font-light py-3  ps-4 block">
                                     {result?.releaseYear?.year}
                                   </span>
                                 </div>
@@ -308,35 +328,82 @@ const Nav = () => {
                 <button onClick={handleSearchClick}>
                   <FontAwesomeIcon icon={faSearch} color="white" />
                 </button>
-                {session?.user ? (
-                  <>
-                    <button onClick={handleSignOut} className="px-5">
-                      <FontAwesomeIcon icon={faSignOut} color="white" />
-                    </button>
-                    <button onClick={() => setOpen(true)} className="px-5">
-                      <FontAwesomeIcon icon={faGear} color="white" />
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    {providers &&
-                      Object.values(providers).map((provider) => (
-                        <button
-                          type="button"
-                          key={provider.name}
-                          onClick={() => signIn(provider.id)}
-                          className="px-5"
-                        >
-                          <FontAwesomeIcon icon={faSignIn} color="white" />
-                        </button>
-                      ))}
-                  </>
-                )}
+                <div className=" inline-block relative px-3">
+                  {session?.user?.image ? (
+                    <Image
+                      src={session?.user?.image}
+                      width={35}
+                      height={35}
+                      className="rounded-full"
+                      onClick={toggleUserDropdown}
+                      alt="profile"
+                    />
+                  ) : (
+                    <Image
+                      src={user}
+                      height={35}
+                      width={35}
+                      className="rounded-full"
+                      onClick={toggleUserDropdown}
+                    />
+                  )}
+
+                  <ul
+                    className={` absolute  text-gray-800 pt-2 right-1 z-20 top-[5.5vh] bg-zinc-100 ${
+                      userDropdown ? "block" : "hidden"
+                    } rounded `}
+                  >
+                    {session?.user ? (
+                      <>
+                        <li className="userItem">
+                          <button onClick={handleSignOut} className="p-1">
+                            <span className="text-lg font-semibold me-2 ">
+                              Sign Out
+                            </span>
+                            <FontAwesomeIcon icon={faSignOut} color="black" />
+                          </button>
+                        </li>
+                        <li className="userItem">
+                          <button onClick={() => setOpen(true)} className="p-1">
+                            <span className="text-lg font-semibold me-2 ">
+                              Settings
+                            </span>
+                            <FontAwesomeIcon icon={faGear} color="black" />
+                          </button>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="userItem">
+                          <button onClick={handleSignOut} className="">
+                            {providers &&
+                              Object.values(providers).map((provider) => (
+                                <button
+                                  type="button"
+                                  key={provider.name}
+                                  onClick={() => signIn(provider.id)}
+                                  className="text-gray-900"
+                                >
+                                  <span className="text-lg font-semibold me-2 ">
+                                    Sign In
+                                  </span>
+                                  <FontAwesomeIcon
+                                    icon={faSignIn}
+                                    color="black"
+                                  />
+                                </button>
+                              ))}
+                          </button>
+                        </li>
+                      </>
+                    )}
+                  </ul>
+                </div>
               </>
             )}
           </div>
         </div>
-        <div className="sm:hidden flex relative w-full p-4">
+        <div className="min-[772px]:hidden flex relative w-full p-4">
           <div className="w-full">
             <FontAwesomeIcon
               icon={faBars}
@@ -362,6 +429,11 @@ const Nav = () => {
                 </Link>
                 {session?.user ? (
                   <>
+                    <Link href={"/upcoming"} className="navMobile">
+                      <FontAwesomeIcon icon={faCalendar} color="white" />
+                      <span className="navText">Upcoming</span>
+                    </Link>
+
                     <div
                       className={`relative inline-block text-left group mt-1.5  w-full`}
                       onMouseEnter={handleMouseEnter}
@@ -420,6 +492,10 @@ const Nav = () => {
                         )}
                       </ul>
                     </div>
+                    <Link href={"/preferences"} className="navMobile">
+                      <FontAwesomeIcon icon={faGear} color="white" />
+                      <span className="navText">Preferences</span>
+                    </Link>
                     <button
                       onClick={handleSignOut}
                       className="navMobile w-full"
@@ -440,14 +516,14 @@ const Nav = () => {
                           type="button"
                           key={provider.name}
                           onClick={() => signIn(provider.id)}
-                          className="navMobile "
+                          className="navMobile w-full"
                         >
-                          <span className="navText">Sign In</span>
                           <FontAwesomeIcon
                             icon={faSignIn}
                             color="white"
                             className="pl-2"
                           />
+                          <span className="navText">Sign In</span>
                         </button>
                       ))}
                   </>

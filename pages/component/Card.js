@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import placeholder from "../../assets/placeholder.jpg";
 import { useRouter } from "next/router";
 
-const Card = ({ data, type }) => {
+const Card = ({ data }) => {
   const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const handleMouseEnter = () => {
@@ -13,9 +13,10 @@ const Card = ({ data, type }) => {
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
-
   const handleCardClick = async (id) => {
-    const route = `/${encodeURIComponent(type)}/${encodeURIComponent(id)}`;
+    const route = `/${encodeURIComponent(
+      data?.titleType?.id
+    )}/${encodeURIComponent(id)}`;
     router.push(route);
   };
 

@@ -17,7 +17,6 @@ const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
   const [cardData, setCardData] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [dataFetched, setDataFetched] = useState(false);
   const mergeKeyResults = (arrays, key) => {
     const merged = arrays.reduce((accumulator, array) => {
@@ -44,7 +43,23 @@ const Carousel = () => {
     const shuffledArray = [...mergedArray].sort(() => Math.random() - 0.5);
     return shuffledArray.slice(0, numberOfResults);
   };
-
+  const cardsPerSlide = () => {
+    if (window.innerWidth >= 1520) {
+      return 5;
+    } else if (window.innerWidth >= 1360) {
+      return 4;
+    } else if (window.innerWidth >= 1024) {
+      return 3;
+    } else if (window.innerWidth >= 664) {
+      return 2;
+    } else {
+      return 1;
+    }
+  };
+  const [currentCardsPerSlide, setCurrentCardsPerSlide] = useState(
+    cardsPerSlide()
+  );
+  console.log(currentCardsPerSlide);
   useEffect(() => {
     const fetchPreferences = async () => {
       try {
@@ -91,10 +106,11 @@ const Carousel = () => {
     }
   }, [selectedGenres, dataFetched]);
   console.log(cardData);
-  const totalSlides = cardData.length / 4 || 5 / 4;
-  const cardsPerSlide = 4;
-  const startIndex = (currentSlide - 1) * cardsPerSlide;
-  const endIndex = startIndex + cardsPerSlide;
+  const totalSlides =
+    cardData.length / currentCardsPerSlide || 5 / currentCardsPerSlide;
+
+  const startIndex = (currentSlide - 1) * currentCardsPerSlide;
+  const endIndex = startIndex + currentCardsPerSlide;
 
   const handlePrevSlide = () => {
     setCurrentSlide((prevSlide) =>
@@ -110,6 +126,17 @@ const Carousel = () => {
   const handleSlideChange = (slideNumber) => {
     setCurrentSlide(slideNumber);
   };
+  useEffect(() => {
+    const handleResize = () => {
+      setCurrentCardsPerSlide(cardsPerSlide());
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) =>
@@ -133,7 +160,10 @@ const Carousel = () => {
           />
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative  my-4">
+          <span className="text-2xl text-white flex-center font-bold">
+            Recommendations
+          </span>
           <div className="flex justify-around mx-10 text-white items-center">
             <button
               onClick={handlePrevSlide}
@@ -153,7 +183,7 @@ const Carousel = () => {
               <FontAwesomeIcon icon={faArrowRightLong} color="white" />
             </button>
           </div>
-          <div className="carousel-tabs">
+          <div className="flex-center overflow-x-auto mx-4 py-2">
             {Array.from({ length: totalSlides }, (_, index) => (
               <button
                 key={index + 1}
