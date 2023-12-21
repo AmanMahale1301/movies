@@ -20,7 +20,7 @@ const CarouselCard = ({ data }) => {
   };
 
   return (
-    <div className="relative max-w-xs rounded overflow-hidden" key={data._id}>
+    <div className="relative max-w-xs rounded overflow-hidden" key={data?._id}>
       <div
         className="group relative px-4 py-4 transition-all duration-300"
         onMouseEnter={handleMouseEnter}
