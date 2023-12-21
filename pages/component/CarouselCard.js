@@ -57,11 +57,11 @@ const CarouselCard = ({ data }) => {
           )}
         </div>
         <div className="font-sans text-white text-xs mt-1 truncate w-56">
-          {data.originalTitleText.text}
+          {data?.originalTitleText?.text}
         </div>
-        {data.releaseYear ? (
+        {data?.releaseYear ? (
           <div className="font-sans text-slate-400 text-xs mt-1">
-            {data.releaseYear.year}
+            {data?.releaseYear?.year}
           </div>
         ) : (
           <div className="font-sans text-slate-400 text-xs mt-1">Not Found</div>
