@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import spinner from "../../assets/spinner.png";
 import Image from "next/image";
-import { axiosOpen } from "@/utils/service";
 import axios from "axios";
 
 const Preferences = ({ isDrawerOpen, setIsDrawerOpen, genres, loading }) => {
