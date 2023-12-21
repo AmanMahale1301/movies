@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import spinner from "../../assets/spinner.png";
 import Image from "next/image";
+import axios from "axios";
 
 const Carousel = () => {
   const { data: session } = useSession();
@@ -47,7 +48,7 @@ const Carousel = () => {
   useEffect(() => {
     const fetchPreferences = async () => {
       try {
-        const response = await axiosOpen.post(`/api/user/preferences`, {
+        const response = await axios.post(`/api/user/preferences`, {
           email: session?.user?.email,
         });
         setSelectedGenres(response.data.preferences);
