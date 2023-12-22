@@ -409,25 +409,28 @@ const Nav = () => {
             />
             {toggleDropdown && (
               <div className="container ">
-                <Link href={"/"} className="navMobile">
-                  <FontAwesomeIcon icon={faHome} color="white" />
-                  <span className="navText">Home </span>
-                </Link>
-                <Link href={"/movies"} className="navMobile">
-                  <FontAwesomeIcon icon={faFilm} color="white" />
-                  <span className="navText">Movies</span>
-                </Link>
-                <Link href={"/tvSeries"} className="navMobile">
-                  <FontAwesomeIcon icon={faTv} color="white" />
-                  <span className="navText">TV Series</span>
-                </Link>
-                {session?.user ? (
-                  <>
-                    <Link href={"/upcoming"} className="navMobile">
+                <div className="flex-center w-full flex-wrap">
+                  <Link href={"/"} className="m-2">
+                    <FontAwesomeIcon icon={faHome} color="white" />
+                    <span className="navText">Home </span>
+                  </Link>
+                  <Link href={"/movies"} className="m-2">
+                    <FontAwesomeIcon icon={faFilm} color="white" />
+                    <span className="navText">Movies</span>
+                  </Link>
+                  <Link href={"/tvSeries"} className="m-2">
+                    <FontAwesomeIcon icon={faTv} color="white" />
+                    <span className="navText">TV Series</span>
+                  </Link>
+                  {session?.user ? (
+                    <Link href={"/upcoming"} className="m-2">
                       <FontAwesomeIcon icon={faCalendar} color="white" />
                       <span className="navText">Upcoming</span>
                     </Link>
-
+                  ) : null}
+                </div>
+                {session?.user ? (
+                  <>
                     <div
                       className={`relative inline-block text-left group mt-1.5  w-full`}
                       onMouseEnter={handleMouseEnter}
@@ -486,31 +489,30 @@ const Nav = () => {
                         )}
                       </ul>
                     </div>
-                    <Link href={"/profile"} className="navMobile">
-                      <FontAwesomeIcon icon={faGear} color="white" />
-                      <span className="navText">Profile</span>
-                    </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="navMobile w-full"
-                    >
-                      <FontAwesomeIcon
-                        icon={faSignOut}
-                        color="white"
-                        className="pl-3"
-                      />
-                      <span className="navText ">Sign Out</span>
-                    </button>
+                    <div className="flex-center w-full flex-wrap">
+                      <Link href={"/profile"} className="m-2">
+                        <FontAwesomeIcon icon={faGear} color="white" />
+                        <span className="navText">Profile</span>
+                      </Link>
+                      <button onClick={handleSignOut} className=" ">
+                        <FontAwesomeIcon
+                          icon={faSignOut}
+                          color="white"
+                          className="pl-3"
+                        />
+                        <span className="navText ">Sign Out</span>
+                      </button>
+                    </div>
                   </>
                 ) : (
-                  <>
+                  <div className="flex-center w-full flex-wrap">
                     {providers &&
                       Object.values(providers).map((provider) => (
                         <button
                           type="button"
                           key={provider.name}
                           onClick={() => signIn(provider.id)}
-                          className="navMobile w-full"
+                          className=" w-full"
                         >
                           <FontAwesomeIcon
                             icon={faSignIn}
@@ -520,7 +522,7 @@ const Nav = () => {
                           <span className="navText">Sign In</span>
                         </button>
                       ))}
-                  </>
+                  </div>
                 )}
                 <div className="navMobile py-2">
                   <input
