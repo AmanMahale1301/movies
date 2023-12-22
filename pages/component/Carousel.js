@@ -44,16 +44,18 @@ const Carousel = () => {
     return shuffledArray.slice(0, numberOfResults);
   };
   const cardsPerSlide = () => {
-    if (window.innerWidth >= 1520) {
-      return 5;
-    } else if (window.innerWidth >= 1360) {
-      return 4;
-    } else if (window.innerWidth >= 1024) {
-      return 3;
-    } else if (window.innerWidth >= 664) {
-      return 2;
-    } else {
-      return 1;
+    if (typeof window !== "undefined") {
+      if (window.innerWidth >= 1520) {
+        return 5;
+      } else if (window.innerWidth >= 1360) {
+        return 4;
+      } else if (window.innerWidth >= 1024) {
+        return 3;
+      } else if (window.innerWidth >= 664) {
+        return 2;
+      } else {
+        return 1;
+      }
     }
   };
   const [currentCardsPerSlide, setCurrentCardsPerSlide] = useState(
