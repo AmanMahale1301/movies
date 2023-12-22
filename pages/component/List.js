@@ -66,7 +66,7 @@ const List = ({ type }) => {
       ) : (
         <>
           <div className=" flex flex-wrap justify-center items-center ">
-            {data && data.map((movie) => <Card data={movie} type={type} />)}
+            {data && data.map((movie) => <Card data={movie} />)}
           </div>
           <div className="w-full flex items-center justify-center">
             <button

@@ -10,19 +10,6 @@ const Preferences = ({ isDrawerOpen, setIsDrawerOpen, genres, loading }) => {
   const [initialGenres, setInitialGenres] = useState([]);
   const { data: session } = useSession();
 
-  useEffect(() => {
-    const storedGenres = sessionStorage.getItem("selectedGenres");
-    if (storedGenres) {
-      const parsedGenres = JSON.parse(storedGenres);
-      setSelectedGenres(parsedGenres);
-      setInitialGenres(parsedGenres);
-    }
-  }, []);
-
-  useEffect(() => {
-    sessionStorage.setItem("selectedGenres", JSON.stringify(selectedGenres));
-  }, [selectedGenres]);
-
   const toggleGenreSelection = (genre) => {
     const isGenreSelected = selectedGenres.includes(genre);
     const isLimitReached = selectedGenres.length >= 5;

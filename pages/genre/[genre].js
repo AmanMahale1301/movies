@@ -70,7 +70,7 @@ const index = () => {
             <>
               <div className=" flex flex-wrap justify-center items-center ">
                 {data.map((item) => (
-                  <Card data={item} type={item?.titleType?.text} />
+                  <Card data={item} />
                 ))}
               </div>
               <div className="w-full">

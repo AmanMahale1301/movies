@@ -9,6 +9,7 @@ const fetchMoreData = async (page) => {
     `/titles/x/upcoming?page=${page}&info=custom_info&limit=20`
   );
   const newData = await response?.data?.results;
+
   return newData;
 };
 

@@ -122,13 +122,9 @@ const Nav = () => {
   };
 
   const handleMobileSearch = () => {
-    const trimmedQuery = query.trim();
-    console.log(trimmedQuery);
-    if (query.trim() !== "") {
-      setQuery("");
-      const route = `/search/${encodeURIComponent(query)}`;
-      router.push(route);
-    }
+    console.log(query);
+    const route = `/search/${encodeURIComponent(query)}`;
+    router.push(route);
   };
   const handleSearchRoute = (result) => {
     const route = `/${encodeURIComponent(
@@ -375,25 +371,23 @@ const Nav = () => {
                     ) : (
                       <>
                         <li className="userItem">
-                          <button onClick={handleSignOut} className="">
-                            {providers &&
-                              Object.values(providers).map((provider) => (
-                                <button
-                                  type="button"
-                                  key={provider.name}
-                                  onClick={() => signIn(provider.id)}
-                                  className="text-gray-900"
-                                >
-                                  <span className="text-lg font-semibold me-2 ">
-                                    Sign In
-                                  </span>
-                                  <FontAwesomeIcon
-                                    icon={faSignIn}
-                                    color="black"
-                                  />
-                                </button>
-                              ))}
-                          </button>
+                          {providers &&
+                            Object.values(providers).map((provider) => (
+                              <button
+                                type="button"
+                                key={provider.name}
+                                onClick={() => signIn(provider.id)}
+                                className="text-gray-900"
+                              >
+                                <span className="text-lg font-semibold me-2 ">
+                                  Sign In
+                                </span>
+                                <FontAwesomeIcon
+                                  icon={faSignIn}
+                                  color="black"
+                                />
+                              </button>
+                            ))}
                         </li>
                       </>
                     )}
@@ -492,9 +486,9 @@ const Nav = () => {
                         )}
                       </ul>
                     </div>
-                    <Link href={"/preferences"} className="navMobile">
+                    <Link href={"/profile"} className="navMobile">
                       <FontAwesomeIcon icon={faGear} color="white" />
-                      <span className="navText">Preferences</span>
+                      <span className="navText">Profile</span>
                     </Link>
                     <button
                       onClick={handleSignOut}
@@ -531,13 +525,15 @@ const Nav = () => {
                 <div className="navMobile py-2">
                   <input
                     type="text"
-                    className=" font-sans  rounded-r-none rounded text-center py-1  focus:border-none shadow appearance-none focus:outline-none "
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="font-sans rounded-r-none rounded text-center py-1 focus:border-none shadow appearance-none focus:outline-none"
                     placeholder="Search..."
                     style={{ width: "60vw" }}
                   />
                   <button
                     className="text-slate-200  bg-white py-1 px-2 rounded-r text-base font-sans  font-semibold "
-                    onClick={() => handleMobileSearch()}
+                    onClick={() => handleSearch()}
                   >
                     <FontAwesomeIcon icon={faSearch} color="grey" />
                   </button>
