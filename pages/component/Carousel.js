@@ -144,8 +144,7 @@ const Carousel = () => {
       setCurrentSlide((prevSlide) =>
         prevSlide === totalSlides ? 1 : prevSlide + 1
       );
-    }, 5000); // Change the interval time as needed (currently set to 5 seconds)
-
+    }, 5000);
     return () => clearInterval(interval);
   }, [currentSlide, totalSlides]);
   return (
@@ -163,43 +162,60 @@ const Carousel = () => {
         </div>
       ) : (
         <div className="relative  my-4">
-          <span className="text-2xl text-white flex-center font-bold">
-            Recommendations
-          </span>
-          <div className="flex justify-around mx-10 text-white items-center">
-            <button
-              onClick={handlePrevSlide}
-              className="border-2 border-gray-300 p-2 rounded"
-            >
-              <FontAwesomeIcon icon={faArrowLeftLong} color="white" />
-            </button>
-            <div className="flex justify-center flex-wrap">
-              {cardData.slice(startIndex, endIndex).map((data) => (
-                <CarouselCard key={data._id} data={data} />
-              ))}
+          {!dataFetched ? (
+            <div className="flex items-center justify-center min-h-screen">
+              <span className="text-2xl text-white font-bold">
+                Setting up your preferences...
+              </span>
             </div>
-            <button
-              onClick={handleNextSlide}
-              className="border-2 border-gray-300 p-2 rounded"
-            >
-              <FontAwesomeIcon icon={faArrowRightLong} color="white" />
-            </button>
-          </div>
-          <div className="flex-center overflow-x-auto mx-4 py-2">
-            {Array.from({ length: totalSlides }, (_, index) => (
-              <button
-                key={index + 1}
-                onClick={() => handleSlideChange(index + 1)}
-                className={`bg-[#020916] border border-gray-300  text-xs font-medium px-1  rounded mx-2 ${
-                  currentSlide === index + 1
-                    ? "bg-slate-100 text-slate-100"
-                    : "text-[#020916]"
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
+          ) : selectedGenres.length === 0 ? (
+            <div className="flex items-center justify-center min-h-screen">
+              <span className="text-2xl text-white font-bold">
+                Preferences not found. Please set up your preferences.
+              </span>
+              {/* Optionally, you can provide a link or button to navigate to the preferences page */}
+            </div>
+          ) : (
+            <>
+              <span className="text-2xl text-white flex-center font-bold">
+                Recommendations
+              </span>
+              <div className="flex justify-around mx-10 text-white items-center">
+                <button
+                  onClick={handlePrevSlide}
+                  className="border-2 border-gray-300 p-2 rounded"
+                >
+                  <FontAwesomeIcon icon={faArrowLeftLong} color="white" />
+                </button>
+                <div className="flex justify-center flex-wrap">
+                  {cardData.slice(startIndex, endIndex).map((data) => (
+                    <CarouselCard key={data._id} data={data} />
+                  ))}
+                </div>
+                <button
+                  onClick={handleNextSlide}
+                  className="border-2 border-gray-300 p-2 rounded"
+                >
+                  <FontAwesomeIcon icon={faArrowRightLong} color="white" />
+                </button>
+              </div>
+              <div className="flex-center overflow-x-auto mx-4 py-2">
+                {Array.from({ length: totalSlides }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => handleSlideChange(index + 1)}
+                    className={`bg-[#020916] border border-gray-300  text-xs font-medium px-1  rounded mx-2 ${
+                      currentSlide === index + 1
+                        ? "bg-slate-100 text-slate-100"
+                        : "text-[#020916]"
+                    }`}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
     </>

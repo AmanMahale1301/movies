@@ -2,7 +2,7 @@ import User from "@/models/user";
 import { connectToDB } from "@/utils/config";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-console.log(process.env.SECRET, "Secret");
+// console.log(process.env.SECRET, "Secret");
 const handler = NextAuth({
   providers: [
     GoogleProvider({

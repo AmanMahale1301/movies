@@ -6,10 +6,8 @@ import {
   faFilm,
   faFolderOpen,
   faGear,
-  faGlobe,
   faHome,
   faSearch,
-  faSign,
   faSignIn,
   faSignOut,
   faTv,
@@ -23,7 +21,7 @@ import { useRouter } from "next/router";
 import spinner from "../../assets/spinner.png";
 import placeholder from "../../assets/placeholder.jpg";
 import { useSession, getProviders, signIn, signOut } from "next-auth/react";
-import Preferences from "./Preferences";
+
 import user from "../../assets/user.jpg";
 const Nav = () => {
   const { data: session } = useSession();
@@ -35,7 +33,6 @@ const Nav = () => {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [open, setOpen] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const router = useRouter();
   useEffect(() => {
@@ -121,11 +118,6 @@ const Nav = () => {
     }
   };
 
-  const handleMobileSearch = () => {
-    console.log(query);
-    const route = `/search/${encodeURIComponent(query)}`;
-    router.push(route);
-  };
   const handleSearchRoute = (result) => {
     const route = `/${encodeURIComponent(
       result?.titleType?.id
@@ -135,6 +127,10 @@ const Nav = () => {
   const handleSignOut = async () => {
     setToggleDropdown(false);
     await signOut({ redirect: false });
+    router.push("/");
+  };
+  const handleSignIn = (id) => {
+    signIn(id);
     router.push("/");
   };
   const toggleUserDropdown = () => {
@@ -360,12 +356,12 @@ const Nav = () => {
                           </button>
                         </li>
                         <li className="userItem">
-                          <button onClick={() => setOpen(true)} className="p-1">
+                          <Link href={"/profile"} className="p-1">
                             <span className="text-lg font-semibold me-2 ">
-                              Settings
+                              Profile
                             </span>
                             <FontAwesomeIcon icon={faGear} color="black" />
-                          </button>
+                          </Link>
                         </li>
                       </>
                     ) : (
@@ -376,7 +372,7 @@ const Nav = () => {
                               <button
                                 type="button"
                                 key={provider.name}
-                                onClick={() => signIn(provider.id)}
+                                onClick={() => handleSignIn(provider.id)}
                                 className="text-gray-900"
                               >
                                 <span className="text-lg font-semibold me-2 ">
@@ -545,12 +541,6 @@ const Nav = () => {
           </div>
         </div>
       </nav>
-      <Preferences
-        isDrawerOpen={open}
-        setIsDrawerOpen={setOpen}
-        genres={genres}
-        loading={loading}
-      />
     </>
   );
 };
